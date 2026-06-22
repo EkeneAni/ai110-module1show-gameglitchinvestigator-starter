@@ -21,7 +21,7 @@ difficulty = st.sidebar.selectbox(
     index=1,
 )
 
-# FIXME: Mathc each difficulty to the appropriate level
+# FIX: Matched each difficulty to the appropriate level
 attempt_limit_map = {
     "Easy": 8,
     "Normal": 6,
@@ -37,6 +37,7 @@ st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
+#FIX: Refactored logic by starting attempts at 0 instead of 1
 if "attempts" not in st.session_state:
     st.session_state.attempts = 0
 
@@ -84,6 +85,7 @@ if new_game:
     st.success("New game started.")
     st.rerun()
 
+#FIX: Refactored logic by using the custom range, not just 1 - 100
 if st.session_state.status != "playing":
     attempts_info.info(
         f"Guess a number between {low} and {high}. Attempts left: 0"
@@ -97,6 +99,7 @@ if st.session_state.status != "playing":
         )
     st.stop()
 
+#FIX: Refactored logic into logic_utils.py for parse_guess
 if submit:
     ok, guess_int, err = parse_guess(raw_guess)
 
@@ -108,6 +111,7 @@ if submit:
             guess_int, st.session_state.secret, low, high
         )
 
+    #FIX: Refactored logic by adding a check for out of range
     if ok and outcome == "Out of Range":
         # In-range guesses only: reject without spending an attempt.
         st.error(message)
@@ -119,6 +123,7 @@ if submit:
         if show_hint:
             st.warning(message)
 
+        #FIX: Refactored scoring 
         st.session_state.score = update_score(
             current_score=st.session_state.score,
             outcome=outcome,
